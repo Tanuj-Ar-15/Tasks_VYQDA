@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Without Node.js</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+
+        }
+
+        input {
+            width: 100%;
+            padding: 5px;
+            border: none !important;
+            outline: none;
+        }
+    </style>
+
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+
+    <script src="https://unpkg.com/@babel/standalone"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+
+<body>
+
+    <div id="root"></div>
+
+  
+    <script type="text/babel">
+
+        const { useState } = React;
+      
+        const App = () => {
+            return (
+                <EditableTable />
+
+            );
+        };
+
+
+        const EditableTable = () => {
+            const [rows, setRows] = useState([{ id: 1, title: "Onboarding Call", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 2, title: "Google Search Console Access", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 3, title: "Google Analytics Access", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 4, title: "Website Access", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 5, title: "Technical Audit", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 6, title: "Anchor Text and Semantic Analysis", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 7, title: "Competitor Analysis", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 8, title: "Anchor Text / URL Mapping", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 9, title: "Google Data Studio Report + Local Reporting Suite", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 10, title: "Site Level Optimization", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 11, title: "On Page Optimization", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 12, title: "Content Creation", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 13, title: "Content Publishing", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 14, title: "Premium Press Release", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 15, title: "Authority Niche Placements", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" }, { id: 16, title: "Review Management", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 17, title: "Index Links", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" },
+            { id: 18, title: "Video Recap", value1: "", value2: "", value3: "", value4: "", value5: "", value6: "" }]);
+
+            const handleChange = (id, column, newValue) => {
+                const updatedRows = rows.map((row) =>
+                    row.id === id ? { ...row, [column]: newValue } : row
+                );
+                setRows(updatedRows);
+            };
+
+            // Submit bulk values to the backend
+            const handleSubmit = async () => {
+
+                let data = await fetch("http://localhost:6000/create/report", {
+                    method: "POST",
+                    headers: {
+                       "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(rows)
+                })
+
+                let result = await data.json()
+                if (result.created) {
+                    alert("Report Added Successfully!")
+                    console.log("Data to POST to backend:", rows);
+                }
+
+            };
+
+            return (
+                <div style={{ padding: "20px" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                        <thead>
+                            <tr>
+                                <th className="text-center" style={{ border: "1px solid #ddd", padding: "8px" }}>Title</th>
+                                <th className="text-center" style={{ border: "1px solid #ddd", padding: "8px" }} colSpan={6}>Values</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {rows.map((row) => (
+                                <tr key={row.id}>
+                                    <td style={{ border: "1px solid #ddd", padding: "8px", fontWeight: "bold" }}>{row.title}</td>
+                                    {["value1", "value2", "value3", "value4", "value5", "value6"].map((column) => (
+                                        <td key={column} style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                            <input
+                                                type="text"
+                                                value={row[column]}
+                                                onChange={(e) => handleChange(row.id, column, e.target.value)}
+                                                style={{
+                                                    width: "100%",
+                                                    padding: "5px",
+                                                    border: "1px solid #ccc",
+                                                    borderRadius: "4px",
+                                                }}
+                                            />
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <div style={{ marginTop: "20px" }}>
+                        <button
+                            onClick={handleSubmit}
+                            style={{
+                                padding: "10px 20px",
+                                backgroundColor: "#4CAF50",
+                                color: "white",
+                                border: "none",
+                                borderRadius: "4px",
+                                cursor: "pointer",
+                                fontSize: "16px",
+                            }}
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+        ReactDOM.render(<App />, document.getElementById('root'));
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+body {
+  background-color: rgb(247, 200, 247);
+}
+
+.navbar {
+  height: 70px;
+  width: 100%;
+  background-color: black;
+}
+
+.navbar img {
+  height: 40px;
+  width: auto;
+  background-color: white;
+  cursor: pointer;
+}
+
+.navbar h3 {
+  color: #fff;
+
+
+}
+
+
+.box {
+  height: 200px;
+  width: 400px;
+  /* border: 2px solid black; */
+}
+
+.note-input {
+  height: 60px;
+  width: inherit;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  background-color: rgb(243, 247, 252);
+}
+
+.note-card span {
+  font-weight: 600;
+  color: #08080890;
+}
+
+.delete-btn {
+  cursor: pointer;
+}
